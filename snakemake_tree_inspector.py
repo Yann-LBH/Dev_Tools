@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import re
@@ -23,8 +24,25 @@ def is_likely_filepath(path_str):
 
 
 if __name__ == "__main__":
-  config_file = "config/config.yaml"
-  common_smk_path = "workflow/rules/common.smk"
+
+  # 0. Argument parsing
+  parser = argparse.ArgumentParser(
+      description="Inspect expected Snakemake output tree dynamically."
+  )
+  parser.add_argument(
+      "--config",
+      default="config/config.yaml",
+      help="Path to the pipeline config file (default: config/config.yaml)",
+  )
+  parser.add_argument(
+      "--rules",
+      default="workflow/rules/common.smk",
+      help="Path to the common.smk file (default: workflow/rules/common.smk)",
+  )
+  args = parser.parse_args()
+
+  config_file = args.config
+  common_smk_path = args.rules
 
   # 1. Load configuration
   if os.path.exists(config_file):
